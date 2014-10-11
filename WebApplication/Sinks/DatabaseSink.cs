@@ -34,12 +34,12 @@ namespace WebApplication.Sinks
                 .ToList();
         }
 
-        public DatabaseSink() : this(string.Empty) { }
+        public DatabaseSink(TimeSpan flushInterval) : this(string.Empty, flushInterval) { }
 
-        public DatabaseSink(string name)
+        public DatabaseSink(string databaseName, TimeSpan flushInterval)
         {
-            database = string.IsNullOrEmpty(name) ? DatabaseFactory.CreateDatabase() : DatabaseFactory.CreateDatabase(name);
-            timer = new Timer(OnTick, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+            database = string.IsNullOrEmpty(databaseName) ? DatabaseFactory.CreateDatabase() : DatabaseFactory.CreateDatabase(databaseName);
+            timer = new Timer(OnTick, null, TimeSpan.Zero, flushInterval);
         }
 
         public void OnCompleted() { }
